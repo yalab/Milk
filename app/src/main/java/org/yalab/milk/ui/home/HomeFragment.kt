@@ -1,5 +1,6 @@
 package org.yalab.milk.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.core.view.MotionEventCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.yalab.milk.R
 import org.yalab.milk.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -42,16 +44,18 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    fun initLightButtion() {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initLightButtion() {
         binding.LightButton.setOnTouchListener { v, event ->
-            val action: Int = MotionEventCompat.getActionMasked(event)
+            val action: Int = event.action
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
-                    binding.textHome.text = "ACTION_DOWN"
+                    binding.textHome.text = getString(R.string.light_button_down)
+                    v.performClick()
                     true
                 }
                 MotionEvent.ACTION_UP -> {
-                    binding.textHome.text = "ACTION_UP"
+                    binding.textHome.text = getString(R.string.light_button_up)
                     true
                 }
                 else -> {
