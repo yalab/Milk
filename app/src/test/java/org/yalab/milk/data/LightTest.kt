@@ -5,8 +5,16 @@ import org.junit.Before
 import org.junit.Test
 
 class LightTest{
+    lateinit var light:Light
+
+    @Before
+    @Throws(Exception::class)
+    fun setUp() {
+        light = Light()
+    }
+
     @Test
     fun on() {
-        assertEquals(1, 1)
+        assertEquals(true, light.on())
     }
 }
