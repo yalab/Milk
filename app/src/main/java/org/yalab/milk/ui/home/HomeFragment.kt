@@ -4,21 +4,17 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraControl
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.yalab.milk.R
+import org.yalab.milk.data.Light
 import org.yalab.milk.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -31,7 +27,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    lateinit var cameraControl: CameraControl
+    lateinit var light: Light
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +58,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startCamera()
+        light = Light(requireContext(), binding.viewFinder.surfaceProvider, this)
     }
 
     override fun onDestroyView() {
@@ -76,13 +72,13 @@ class HomeFragment : Fragment() {
             val action: Int = event.action
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
-                    cameraControl.enableTorch(true)
+                    light.on()
                     binding.textHome.text = getString(R.string.light_button_down)
                     v.performClick()
                     true
                 }
                 MotionEvent.ACTION_UP -> {
-                    cameraControl.enableTorch(false)
+                    light.off()
                     binding.textHome.text = getString(R.string.light_button_up)
                     true
                 }
@@ -91,26 +87,5 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
-            try {
-                cameraProvider.unbindAll()
-                val camera = cameraProvider.bindToLifecycle(
-                    this, CameraSelector.DEFAULT_BACK_CAMERA, preview
-                )
-                cameraControl = camera.cameraControl
-            } catch (exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
-            }
-        }, ContextCompat.getMainExecutor(requireContext()))
     }
 }
