@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.Milk"
     tools:context=".ui.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +15,9 @@
         <androidx.camera.view.PreviewView
             android:id="@+id/view_finder"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -31,22 +34,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="@android:string/search_go"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/LightButton"
@@ -57,10 +67,10 @@
         android:layout_marginBottom="64dp"
         android:clickable="true"
         android:contentDescription="@string/light_button_down"
+        android:focusable="true"
         android:src="@android:drawable/btn_star_big_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:focusable="true" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
